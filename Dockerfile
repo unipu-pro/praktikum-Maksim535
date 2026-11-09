@@ -1,29 +1,20 @@
-# syntax=docker/dockerfile:1
+# Simple, single-stage image of the llm CLI (week 4 replaces the multi-stage build from week 3).
+#   docker build -t praktikum-llm .
+#   docker run --rm praktikum-llm --version
+FROM python:3.13-alpine
 
-ARG PYTHON_IMAGE=python:3.13-alpine
-
-# ---- base: runtime dependencies ----
-FROM ${PYTHON_IMAGE} AS base
-
+# PYTHONDONTWRITEBYTECODE: do not write .pyc files; PYTHONUNBUFFERED: logs appear immediately.
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app
+
+# Dependencies first: this layer is rebuilt only when requirements.txt changes.
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ---- test: development dependencies and tests ----
-FROM base AS test
-COPY requirements-dev.txt .
-RUN pip install --no-cache-dir -r requirements-dev.txt
+# Source code last: it changes most often.
 COPY version.txt ollama_client.py llm.py ./
-COPY tests/ tests/
-RUN python -m pytest -v
 
-# ---- runtime: application running as non-root ----
-FROM base AS runtime
-RUN adduser -D -u 10001 app
-COPY version.txt ollama_client.py llm.py ./
-USER app
 ENTRYPOINT ["python", "llm.py"]
 CMD ["--help"]
