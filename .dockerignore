@@ -7,3 +7,6 @@
 .env
 pytest.txt
 docker.txt
+build/
+dist/
+*.egg-info/
