@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/unipu-pro/praktikum-Maksim535/compare/v1.3.0...v1.4.0) (2026-11-11)
+
+
+### Features
+
+* add Docker Compose and storage verification ([4b85c8c](https://github.com/unipu-pro/praktikum-Maksim535/commit/4b85c8c4f7f6a74f8cfee09826a5c592b5aa036f))
+
 ## [1.3.0](https://github.com/unipu-pro/praktikum-Maksim535/compare/v1.2.0...v1.3.0) (2026-11-04)
 
 
